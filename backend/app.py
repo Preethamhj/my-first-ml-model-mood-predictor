@@ -28,8 +28,11 @@ def predict():
     if not data or 'text' not in data:
         return jsonify({'error': 'No text provided'}), 400
     text = data['text']
-    prediction = model.predict([text])
-    return jsonify({'text': text, 'mood': prediction[0]})
+    try:
+        prediction = model.predict([text])
+        return jsonify({'text': text, 'mood': prediction[0]})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
